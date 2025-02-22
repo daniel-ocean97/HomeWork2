@@ -16,3 +16,8 @@ def prod2():
 @pytest.fixture
 def cat1(prod1, prod2):
     return Category(name="vegetables", description="for salad", products=[prod1, prod2])
+
+
+@pytest.fixture
+def new_product():
+    return Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)

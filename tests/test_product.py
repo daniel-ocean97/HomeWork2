@@ -1,5 +1,8 @@
+from src.product import Product
+
+
 def test_product1(prod1):
-    """ Первый тест на проверку экземпляра класса Product """
+    """Первый тест на проверку экземпляра класса Product"""
     assert prod1.name == "cucumber"
     assert prod1.description == "green"
     assert prod1.price == 35.2
@@ -7,7 +10,7 @@ def test_product1(prod1):
 
 
 def test_product2(prod2):
-    """ Второй тест на проверку экземпляра класса Product """
+    """Второй тест на проверку экземпляра класса Product"""
     assert prod2.name == "tomatoes"
     assert prod2.description == "red"
     assert prod2.price == 15.2
@@ -15,17 +18,51 @@ def test_product2(prod2):
 
 
 def test_categories_number(cat1):
-    """ Тест на проверку количества категорий в экземпляре класса Category"""
+    """Тест на проверку количества категорий в экземпляре класса Category"""
     assert cat1.number_of_categories == 1
 
 
 def test_category(cat1, prod1, prod2):
-    """ Тест, который проверяет корректность инициализации объектов класса Category """
+    """Тест, который проверяет корректность инициализации объектов класса Category"""
     assert cat1.name == "vegetables"
     assert cat1.description == "for salad"
-    assert cat1.products == [prod1, prod2]
 
 
-def test_products_number(cat1):
-    """ Тест, который проверяет подсчет количества продуктов """
-    assert cat1.number_of_products == 2
+def test_category_products(cat1):
+    """Проверка геттера products в классе Categories"""
+    assert (
+        cat1.products
+        == "cucumber, 35.2 руб. Остаток: 3 шт.\ntomatoes, 15.2 руб. Остаток: 5 шт.\n"
+    )
+
+
+def test_products_number(cat1, new_product):
+    """Тест, который проверяет подсчет количества продуктов и метод add_product"""
+    assert cat1.product_count == 2
+    cat1.add_product(new_product)
+    assert cat1.product_count == 3
+
+
+def test_new_product():
+    """Проверка класс-метода nrw_product в классе Product"""
+    product = Product.new_product(
+        {
+            "name": "Смартфон",
+            "description": "Новый флагман",
+            "price": 999.99,
+            "quantity": 5,
+        }
+    )
+    assert product.name == "Смартфон"
+    assert product.description == "Новый флагман"
+    assert product.price == 999.99
+    assert product.quantity == 5
+
+
+def test_set_new_price(prod1, capsys):
+    assert prod1.price == 35.2
+    prod1.price = 36
+    assert prod1.price == 36
+    prod1.price = 0
+    assert capsys.readouterr().out == "Цена не должна быть нулевая или отрицательная\n"
+    assert prod1.price == 36
