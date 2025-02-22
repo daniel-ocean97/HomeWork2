@@ -51,8 +51,13 @@ class Category:
         self.product_count = len(products)
 
     def add_product(self, product):
-        self.__products.append(product)
-        self.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            self.product_count += 1
+        else:
+            print(
+                "Передаваемы аргумент должен быть экземпляром Product или его наследником"
+            )
 
     @property
     def products(self):

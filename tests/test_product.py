@@ -36,10 +36,13 @@ def test_category_products(cat1):
     )
 
 
-def test_products_number(cat1, new_product):
+def test_products_number(cat1, new_product, capsys):
     """Тест, который проверяет подсчет количества продуктов и метод add_product"""
     assert cat1.product_count == 2
     cat1.add_product(new_product)
+    assert cat1.product_count == 3
+    cat1.add_product("test")
+    assert capsys.readouterr().out == "Передаваемы аргумент должен быть экземпляром Product или его наследником\n"
     assert cat1.product_count == 3
 
 
