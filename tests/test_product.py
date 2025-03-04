@@ -93,6 +93,7 @@ def test_product_add(prod1, prod2):
     with pytest.raises(TypeError):
         prod1 + 20
 
+
 def test_product_iterator(cat1):
     """Тест класса-итератора ProductIterator"""
     iterator = ProductIterator(cat1)
@@ -104,7 +105,7 @@ def test_product_iterator(cat1):
 
 
 def test_smartphone(smartphone):
-    """ Тест для проверки инициализации класса Smartphone """
+    """Тест для проверки инициализации класса Smartphone"""
     assert smartphone.name == "Samsung"
     assert smartphone.description == "100x zoom"
     assert smartphone.price == 100000
@@ -116,7 +117,7 @@ def test_smartphone(smartphone):
 
 
 def test_lawn_grass(lawn_grass):
-    """ Тест для проверки инициализации класса LawnGrass """
+    """Тест для проверки инициализации класса LawnGrass"""
     assert lawn_grass.name == "Для дачи"
     assert lawn_grass.description == "Зеленая"
     assert lawn_grass.price == 10000
