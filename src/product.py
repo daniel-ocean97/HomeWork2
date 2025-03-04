@@ -16,6 +16,8 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт.\n"
 
     def __add__(self, other):
+        if type(self) != type(other):
+            raise TypeError("Нельзя складывать продукты разных классов")
         return round(self.__price * self.quantity + other.__price * other.quantity, 2)
 
     @classmethod
@@ -101,3 +103,22 @@ class ProductIterator:
             return product
         else:
             raise StopIteration
+
+
+class Smartphone(Product):
+    """ Дочерний класс Product для смартфонов """
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """  Дочерний класс Product для газонной травы  """
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color

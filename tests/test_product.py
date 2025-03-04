@@ -90,7 +90,8 @@ def test_category_str(cat1):
 def test_product_add(prod1, prod2):
     """Тест магического метода __add__ класса Product"""
     assert prod2 + prod1 == 181.6
-
+    with pytest.raises(TypeError):
+        prod1 + 20
 
 def test_product_iterator(cat1):
     """Тест класса-итератора ProductIterator"""
@@ -100,3 +101,26 @@ def test_product_iterator(cat1):
     assert next(iterator).name == "tomatoes"
     with pytest.raises(StopIteration):
         next(iterator)
+
+
+def test_smartphone(smartphone):
+    """ Тест для проверки инициализации класса Smartphone """
+    assert smartphone.name == "Samsung"
+    assert smartphone.description == "100x zoom"
+    assert smartphone.price == 100000
+    assert smartphone.quantity == 5
+    assert smartphone.efficiency == "100 Мгц"
+    assert smartphone.model == "S100"
+    assert smartphone.memory == "100 ГБ"
+    assert smartphone.color == "black"
+
+
+def test_lawn_grass(lawn_grass):
+    """ Тест для проверки инициализации класса LawnGrass """
+    assert lawn_grass.name == "Для дачи"
+    assert lawn_grass.description == "Зеленая"
+    assert lawn_grass.price == 10000
+    assert lawn_grass.quantity == 5
+    assert lawn_grass.country == "Россия"
+    assert lawn_grass.germination_period == "Весна"
+    assert lawn_grass.color == "Зеленый"
