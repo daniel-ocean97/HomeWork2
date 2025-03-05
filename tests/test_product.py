@@ -1,4 +1,6 @@
-from src.product import Product
+import pytest
+
+from src.product import Product, ProductIterator
 
 
 def test_product1(prod1):
@@ -42,7 +44,10 @@ def test_products_number(cat1, new_product, capsys):
     cat1.add_product(new_product)
     assert cat1.product_count == 3
     cat1.add_product("test")
-    assert capsys.readouterr().out == "Передаваемы аргумент должен быть экземпляром Product или его наследником\n"
+    assert (
+        capsys.readouterr().out
+        == "Передаваемы аргумент должен быть экземпляром Product или его наследником\n"
+    )
     assert cat1.product_count == 3
 
 
@@ -63,9 +68,60 @@ def test_new_product():
 
 
 def test_set_new_price(prod1, capsys):
+    """Тест метода price класса Product"""
     assert prod1.price == 35.2
     prod1.price = 36
     assert prod1.price == 36
     prod1.price = 0
     assert capsys.readouterr().out == "Цена не должна быть нулевая или отрицательная\n"
     assert prod1.price == 36
+
+
+def test_product_str(prod1):
+    """Тест строкового отображения класса Product"""
+    assert str(prod1) == "cucumber, 35.2 руб. Остаток: 3 шт.\n"
+
+
+def test_category_str(cat1):
+    """Тест строкового отображения класса Category"""
+    assert str(cat1) == "Vegetables, количество продуктов: 8"
+
+
+def test_product_add(prod1, prod2):
+    """Тест магического метода __add__ класса Product"""
+    assert prod2 + prod1 == 181.6
+    with pytest.raises(TypeError):
+        prod1 + 20
+
+
+def test_product_iterator(cat1):
+    """Тест класса-итератора ProductIterator"""
+    iterator = ProductIterator(cat1)
+    assert iterator.index == 0
+    assert next(iterator).name == "cucumber"
+    assert next(iterator).name == "tomatoes"
+    with pytest.raises(StopIteration):
+        next(iterator)
+
+
+def test_smartphone(smartphone):
+    """Тест для проверки инициализации класса Smartphone"""
+    assert smartphone.name == "Samsung"
+    assert smartphone.description == "100x zoom"
+    assert smartphone.price == 100000
+    assert smartphone.quantity == 5
+    assert smartphone.efficiency == "100 Мгц"
+    assert smartphone.model == "S100"
+    assert smartphone.memory == "100 ГБ"
+    assert smartphone.color == "black"
+
+
+def test_lawn_grass(lawn_grass):
+    """Тест для проверки инициализации класса LawnGrass"""
+    assert lawn_grass.name == "Для дачи"
+    assert lawn_grass.description == "Зеленая"
+    assert lawn_grass.price == 10000
+    assert lawn_grass.quantity == 5
+    assert lawn_grass.country == "Россия"
+    assert lawn_grass.germination_period == "Весна"
+    assert lawn_grass.color == "Зеленый"
