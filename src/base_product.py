@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class BaseProduct(ABC):
-    """ Абстрактный класс для всех классов Product """
+    """Абстрактный класс для всех классов Product"""
 
     @classmethod
     @abstractmethod
