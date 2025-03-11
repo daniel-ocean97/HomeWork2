@@ -1,4 +1,5 @@
 from src.base_product import BaseProduct
+from src.exceptions import ZeroQuantityError
 from src.print_mixin import PrintMixin
 
 
@@ -14,7 +15,10 @@ class Product(BaseProduct, PrintMixin):
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity > 0:
+            self.quantity = quantity
+        else:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         super().__init__()
 
     def __str__(self):
@@ -74,13 +78,28 @@ class Category:
         return self.__products
 
     def add_product(self, product):
-        if isinstance(product, Product):
-            self.__products.append(product)
-            self.product_count += 1
+        try:
+            if isinstance(product, Product):
+                if product.quantity > 0:
+                    self.__products.append(product)
+                    self.product_count += 1
+                else:
+                    raise ZeroQuantityError(
+                        "Товар с нулевым количеством не может быть добавлен"
+                    )
+            else:
+                raise ValueError(
+                    "Передаваемы аргумент должен быть экземпляром Product или его наследником"
+                )
+
+        except ZeroQuantityError as e:
+            print(e)
+        except ValueError as e:
+            print(e)
         else:
-            print(
-                "Передаваемы аргумент должен быть экземпляром Product или его наследником"
-            )
+            print("Товар успешно добавлен")
+        finally:
+            print("Обработка добавления товара завершена")
 
     @property
     def products(self):
@@ -88,6 +107,16 @@ class Category:
         for product in self.__products:
             result += str(product)
         return result
+
+    def middle_price(self):
+        try:
+            return round(
+                sum([product.price for product in self.__products])
+                / self.product_count,
+                2,
+            )
+        except ZeroDivisionError:
+            return 0
 
 
 class ProductIterator:
