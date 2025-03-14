@@ -44,10 +44,12 @@ def test_products_number(cat1, new_product, capsys):
     cat1.add_product(new_product)
     assert cat1.product_count == 3
     cat1.add_product("test")
+    message = capsys.readouterr().out.split("\n")
     assert (
-        capsys.readouterr().out
-        == "Передаваемы аргумент должен быть экземпляром Product или его наследником\n"
+        message[-3]
+        == "Передаваемы аргумент должен быть экземпляром Product или его наследником"
     )
+
     assert cat1.product_count == 3
 
 
@@ -125,3 +127,19 @@ def test_lawn_grass(lawn_grass):
     assert lawn_grass.country == "Россия"
     assert lawn_grass.germination_period == "Весна"
     assert lawn_grass.color == "Зеленый"
+
+
+def test_product_new_product():
+    """Расширенный тест для проверки инициализации в классе Product"""
+    with pytest.raises(
+        ValueError, match="Товар с нулевым количеством не может быть добавлен"
+    ):
+        Product(name="cucumber", description="green", price=35.2, quantity=0)
+
+
+def test_product_add_product(cat1, prod3, capsys):
+    """Расширенный тест для проверки метода add_product класса Category"""
+    cat1.add_product(prod3)
+    message = capsys.readouterr().out.split("\n")
+    assert message[-3] == "Товар с нулевым количеством не может быть добавлен"
+    assert message[-2] == "Обработка добавления товара завершена"

@@ -14,6 +14,13 @@ def prod2():
 
 
 @pytest.fixture
+def prod3():
+    prod3 = Product(name="Salad", description="green", price=5.2, quantity=5)
+    prod3.quantity -= 5
+    return prod3
+
+
+@pytest.fixture
 def cat1(prod1, prod2):
     return Category(name="vegetables", description="for salad", products=[prod1, prod2])
 
